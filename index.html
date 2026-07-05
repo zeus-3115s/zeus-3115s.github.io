@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root" class="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hemanth Sreedara — Embedded Systems</title>
+<meta name="description" content="Embedded systems engineer. ESP32, FPGA, real-time DSP. Bangalore."/>
+<!-- Self-hosted Tailwind build (no runtime CDN dependency — works offline / behind firewalls / with ad-blockers) -->
+<link rel="stylesheet" href="assets/tailwind.css"/>
+<style>
+/* ── SELF-HOSTED FONTS (no Google Fonts CDN dependency) ─────── */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-mono-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-sans-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-sans-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-sans-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/ibm-plex-sans-600.woff2') format('woff2');
+}
+
+/* ── BASE / DARK MODE ─────────────────────────────────────── */
+:root {
+  --bg:     #060608;
+  --bg2:    #0b0b12;
+  --bg3:    #111120;
+  --acc:    #ffb700;
+  --acc2:   #ffb70022;
+  --acc3:   #ffb70040;
+  --dim:    #3a3a52;
+  --muted:  #6b6b88;
+  --ghost:  #9898b0;
+  --text:   #d8d8e8;
+  --border: #ffb70020;
+  --bdim:   #ffffff0a;
+  --gold:   #f0c040;
+}
+
+html.light {
+  --bg:     #d8d0bc;
+  --bg2:    #cdc4ae;
+  --bg3:    #c2b89e;
+  --acc:    #a05800;
+  --acc2:   #a0580018;
+  --acc3:   #a0580038;
+  --dim:    #8a7e6a;
+  --muted:  #5a5040;
+  --ghost:  #3a3028;
+  --text:   #100c06;
+  --border: #a0580028;
+  --bdim:   #00000012;
+  --gold:   #804000;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 20px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.3s ease;
+}
+a { color:inherit; text-decoration:none; }
+
+/* PCB dot grid — dark only */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: radial-gradient(circle, var(--acc2) 1px, transparent 1px);
+  background-size: 26px 26px;
+  transition: opacity 0.4s;
+}
+html.light body::before { opacity:0.3; }
+
+/* Scanline — dark only */
+body::after {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:999;
+  background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);
+  transition: opacity 0.4s;
+}
+html.light body::after { opacity:0; }
+
+/* ── NEON TEXT ────────────────────────────────────────────── */
+.neon-name {
+  position: relative;
+  display: inline-block;
+}
+.neon-text {
+  color: var(--acc);
+  animation: neon 6s ease-in-out infinite;
+  font-family: 'IBM Plex Mono', monospace;
+}
+/* SVG cord overlay — runs under name like a neon tube backing */
+.neon-tube-svg {
+  position: absolute;
+  left: -8px; right: -8px;
+  bottom: -4px;
+  height: 8px;
+  pointer-events: none;
+  overflow: visible;
+}
+.neon-tube-path {
+  fill: none;
+  stroke: var(--acc);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px var(--acc)) drop-shadow(0 0 12px var(--acc));
+  animation: neon 6s ease-in-out infinite;
+}
+
+/* ── MOSFET TOGGLE ────────────────────────────────────────── */
+#mosfet-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+#mosfet-channel {
+  transition: fill 0.3s, opacity 0.3s;
+}
+#mosfet-gate-line {
+  transition: stroke 0.3s;
+}
+.mosfet-tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  color: var(--acc);
+  padding: 3px 7px;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#mosfet-toggle:hover .mosfet-tooltip { opacity: 1; }
+
+/* ── OSCILLOSCOPE GRID ─────────────────────────────────────── */
+.scope-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--bdim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bdim) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── TRACE LINE ────────────────────────────────────────────── */
+.trace-wrapper { position: relative; }
+.trace-rail {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 1px; transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, var(--border) 4%, var(--border) 96%, transparent);
+  pointer-events: none;
+}
+.trace-fill {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 0;
+  background: linear-gradient(to bottom, var(--acc), var(--acc3));
+  box-shadow: 0 0 8px 2px var(--acc3);
+  transition: height 0.06s linear;
+}
+
+/* ── RESISTOR DIVIDER (section separator) ──────────────────── */
+.res-divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; position: relative; height: 80px; margin: 0 auto;
+  left: 50%; transform: translateX(-50%);
+  width: 200px;
+}
+.res-wire {
+  flex: 1; height: 1px; background: var(--acc3);
+}
+.res-body {
+  width: 36px; height: 14px;
+  border: 1.5px solid var(--acc);
+  background: var(--bg2);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.res-label {
+  position: absolute; top: -16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.45rem; color: var(--acc);
+  letter-spacing: 0.1em; white-space: nowrap;
+}
+.res-value {
+  position: absolute; bottom: -16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem; color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.res-node {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--acc);
+  box-shadow: 0 0 6px var(--acc);
+  flex-shrink: 0;
+}
+
+/* ── SECTION NODES ─────────────────────────────────────────── */
+.section-node {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  z-index: 20; display: flex; flex-direction: column; align-items: center;
+  pointer-events: none;
+}
+.node-ring {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg2);
+  border: 1.5px solid var(--dim);
+  transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+}
+.node-svg { stroke: var(--dim); fill: none; stroke-width: 1.8; transition: stroke 0.4s; width:17px; height:17px; }
+.node-lbl { font-family:'IBM Plex Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:4px; color:var(--dim); transition:color 0.4s; white-space:nowrap; }
+.section-node.active .node-ring { border-color:var(--acc); background:var(--acc2); box-shadow:0 0 16px var(--acc3); }
+.section-node.active .node-svg  { stroke:var(--acc); }
+.section-node.active .node-lbl  { color:var(--acc); }
+.section-node.passed .node-ring { border-color:var(--acc3); }
+.section-node.passed .node-svg  { stroke:var(--acc3); }
+.section-node.passed .node-lbl  { color:var(--acc3); }
+
+/* ── LED BLINK ─────────────────────────────────────────────── */
+.led-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--acc); color: var(--acc);
+  display: inline-block; flex-shrink: 0;
+  animation: led 1.8s ease-in-out infinite;
+}
+.led-dot:nth-child(1)  { animation-delay: 0s; }
+.led-dot.d2 { animation-delay: 0.3s; }
+.led-dot.d3 { animation-delay: 0.6s; }
+
+/* ── RC REVEAL ─────────────────────────────────────────────── */
+.rc-reveal { opacity:0; transform:translateY(18px); transition: opacity 0.65s cubic-bezier(0,0.8,0.2,1), transform 0.65s cubic-bezier(0,0.8,0.2,1); }
+.rc-reveal.show { opacity:1; transform:translateY(0); }
+.rc-left  { opacity:0; transform:translateX(-22px); transition: opacity 0.65s cubic-bezier(0,0.8,0.2,1), transform 0.65s cubic-bezier(0,0.8,0.2,1); }
+.rc-left.show  { opacity:1; transform:translateX(0); }
+.rc-right { opacity:0; transform:translateX(22px);  transition: opacity 0.65s cubic-bezier(0,0.8,0.2,1), transform 0.65s cubic-bezier(0,0.8,0.2,1); }
+.rc-right.show { opacity:1; transform:translateX(0); }
+
+/* ── CARDS ─────────────────────────────────────────────────── */
+.ecard {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, background 0.2s;
+}
+.ecard:hover { border-color: var(--acc3); background: var(--bg3); }
+.ch-left { border-left: 2px solid var(--acc); }
+.ch-gold { border-left: 2px solid var(--gold); }
+
+.ref-tag {
+  font-family:'IBM Plex Mono',monospace; font-size:0.6rem;
+  color:var(--acc); opacity:0.55; letter-spacing:0.12em; text-transform:uppercase;
+}
+.tag-acc {
+  font-family:'IBM Plex Mono',monospace; font-size:0.68rem;
+  padding: 3px 9px; color:var(--acc);
+  background:var(--acc2); border:1px solid var(--acc3);
+}
+.tag-dim {
+  font-family:'IBM Plex Mono',monospace; font-size:0.68rem;
+  padding: 3px 9px; color:var(--ghost);
+  background:var(--bdim); border:1px solid var(--bdim);
+}
+
+/* ── WAVEFORM FOOTER ───────────────────────────────────────── */
+.wave-track { overflow:hidden; height:40px; position:relative; }
+.wave-inner { display:flex; width:200%; animation: waveflow 8s linear infinite; }
+.wave-inner svg { flex-shrink:0; }
+
+/* ── CUSTOM SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--acc3); }
+
+/* ── NAV ───────────────────────────────────────────────────── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.75rem 2rem;
+  background: rgba(6,6,8,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s;
+}
+html.light nav { background: rgba(244,240,232,0.9); }
+
+@media (prefers-reduced-motion:reduce) {
+  .rc-reveal,.rc-left,.rc-right { transition:none; opacity:1; transform:none; }
+  .neon-text { animation:none; }
+  .led-dot { animation:none; }
+  body::after { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ════════════════════════════════════════════════════ -->
+<nav>
+  <span class="font-mono text-xs tracking-widest" style="color:var(--acc)">
+    H$<span class="animate-blink">▌</span>
+  </span>
+
+  <ul class="flex gap-5 list-none">
+    <li><a href="#skills"    class="font-mono text-[0.6rem] tracking-widest uppercase transition-colors" style="color:var(--muted)" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--muted)'">Skills</a></li>
+    <li><a href="#projects"  class="font-mono text-[0.6rem] tracking-widest uppercase transition-colors" style="color:var(--muted)" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--muted)'">Projects</a></li>
+    <li><a href="#ieee"      class="font-mono text-[0.6rem] tracking-widest uppercase transition-colors" style="color:var(--muted)" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--muted)'">IEEE</a></li>
+    <li><a href="#education" class="font-mono text-[0.6rem] tracking-widest uppercase transition-colors" style="color:var(--muted)" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--muted)'">Edu</a></li>
+    <li><a href="#contact"   class="font-mono text-[0.6rem] tracking-widest uppercase transition-colors" style="color:var(--muted)" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--muted)'">Contact</a></li>
+  </ul>
+
+  <!-- MOSFET TOGGLE — N-channel MOSFET schematic as dark/light switch -->
+  <div id="mosfet-toggle" class="relative flex items-center gap-3" onclick="toggleMode()" title="">
+    <!-- label -->
+    <span id="mosfet-label" class="font-mono text-[0.5rem] tracking-widest uppercase" style="color:var(--acc)">VGS=+5V</span>
+
+    <!-- SVG MOSFET schematic symbol -->
+    <svg width="52" height="36" viewBox="0 0 52 36" style="overflow:visible">
+      <!-- Drain wire top -->
+      <line x1="36" y1="0" x2="36" y2="10" stroke="var(--dim)" stroke-width="1.5"/>
+      <!-- Source wire bottom -->
+      <line x1="36" y1="26" x2="36" y2="36" stroke="var(--dim)" stroke-width="1.5"/>
+      <!-- Body / bulk vertical line -->
+      <line x1="36" y1="10" x2="36" y2="26" stroke="var(--acc)" stroke-width="2" opacity="1" id="mosfet-channel" fill="var(--acc)"/>
+      <!-- Gate insulator -->
+      <line x1="28" y1="9" x2="28" y2="27" stroke="var(--acc)" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Gate connection -->
+      <line x1="10" y1="18" x2="26" y2="18" stroke="var(--dim)" stroke-width="1.5" id="mosfet-gate-line"/>
+      <!-- Gate terminal dot -->
+      <circle cx="10" cy="18" r="2.5" fill="var(--acc)" id="mosfet-gate-dot"/>
+      <!-- Drain stub -->
+      <line x1="28" y1="12" x2="36" y2="12" stroke="var(--dim)" stroke-width="1.5"/>
+      <!-- Source stub + arrow -->
+      <line x1="28" y1="24" x2="36" y2="24" stroke="var(--dim)" stroke-width="1.5"/>
+      <!-- Arrow (N-channel, pointing in) -->
+      <polyline points="22,21 28,18 22,15" fill="none" stroke="var(--acc)" stroke-width="1.2" id="mosfet-arrow"/>
+      <!-- D / S / G labels -->
+      <text x="39" y="12" font-family="IBM Plex Mono" font-size="5" fill="var(--muted)">D</text>
+      <text x="39" y="26" font-family="IBM Plex Mono" font-size="5" fill="var(--muted)">S</text>
+      <text x="3"  y="21" font-family="IBM Plex Mono" font-size="5" fill="var(--muted)">G</text>
+    </svg>
+
+    <div class="mosfet-tooltip">CLICK GATE — TOGGLE Vgs</div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ════════════════════════════════════════════════════ -->
+<section id="hero" class="min-h-screen grid grid-cols-1 lg:grid-cols-2 pt-12 relative overflow-hidden">
+
+  <!-- Oscilloscope grid behind hero -->
+  <div class="scope-grid"></div>
+
+  <!-- Animated waveform across hero bottom -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:60px;pointer-events:none;opacity:0.15;overflow:hidden;">
+    <svg id="hero-wave" width="100%" height="60" preserveAspectRatio="none">
+      <polyline id="scope-wave" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <!-- LEFT -->
+  <div class="flex flex-col justify-center px-8 md:px-16 py-24 relative z-10">
+
+
+    <!-- Status -->
+    <div class="flex items-center gap-2 mb-7">
+      <span class="led-dot"></span>
+      <span class="font-mono text-[0.58rem] tracking-widest uppercase" style="color:var(--acc)">Open to internships · Bangalore, IN</span>
+    </div>
+
+    <!-- NAME with neon tube effect -->
+    <div class="mb-1">
+      <div class="neon-name">
+        <h1 class="neon-text font-mono font-bold leading-none select-none"
+            style="font-size:clamp(3.8rem,8vw,7rem);letter-spacing:-0.03em;">
+          Hemanth
+        </h1>
+        <!-- Neon tube SVG underneath -->
+        <svg class="neon-tube-svg" preserveAspectRatio="none" viewBox="0 0 300 8">
+          <path class="neon-tube-path" d="M4,4 Q30,1 60,4 Q90,7 120,4 Q150,1 180,4 Q210,7 240,4 Q270,1 296,4"/>
+          <!-- electrode caps at ends -->
+          <circle cx="4" cy="4" r="3" fill="none" stroke="var(--acc)" stroke-width="1.5" class="neon-tube-path" style="filter:drop-shadow(0 0 4px var(--acc))"/>
+          <circle cx="296" cy="4" r="3" fill="none" stroke="var(--acc)" stroke-width="1.5" class="neon-tube-path" style="filter:drop-shadow(0 0 4px var(--acc))"/>
+        </svg>
+      </div>
+      <h1 class="font-mono font-bold leading-none" style="font-size:clamp(3.8rem,8vw,7rem);letter-spacing:-0.03em;color:var(--text);opacity:0.92;">
+        Sreedara
+      </h1>
+    </div>
+
+    <div class="font-mono text-xs tracking-widest mb-7 mt-2" style="color:var(--muted)">
+      Embedded Systems &nbsp;·&nbsp; Signal Processing &nbsp;·&nbsp; FPGA
+    </div>
+
+    <!-- Photo + label -->
+    <div class="flex items-center gap-4 mb-7">
+      <div class="relative flex-shrink-0" style="width:56px;">
+        <!-- Hexagonal photo — replace profile.jpg with your LinkedIn photo -->
+        <div id="photo-hex" style="width:56px;height:64px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:var(--bg3);overflow:hidden;position:relative;"
+             title="Replace profile.jpg with your photo">
+          <img src="assets/profile.jpg" alt="Hemanth Sreedara"
+               id="profile-img"
+               style="width:100%;height:100%;object-fit:cover;display:block;"
+               onerror="this.style.display='none';document.getElementById('photo-fallback').style.display='flex';"/>
+          <!-- Fallback placeholder -->
+          <div id="photo-fallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px dashed var(--acc3);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5" style="opacity:0.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.35rem;color:var(--acc);opacity:0.5;text-align:center;letter-spacing:0.06em;">profile.jpg</span>
+          </div>
+        </div>
+        <span class="led-dot d2" style="position:absolute;bottom:-2px;right:-2px;"></span>
+      </div>
+      <div>
+        <div class="font-mono text-xs font-semibold" style="color:var(--text)">EEE · BMSIT&amp;M</div>
+        <div class="font-mono mt-0.5" style="font-size:0.6rem;color:var(--muted)">IEEE AESS Chair &nbsp;·&nbsp; 4× Hackathon Winner</div>
+      </div>
+    </div>
+
+    <p class="text-sm font-light leading-relaxed max-w-md mb-9" style="color:var(--muted)">
+      Build systems that <span style="color:var(--text);font-weight:500">listen, sense, respond</span> in real time —
+      7-mic PDM arrays on UAVs, passive Wi-Fi radar through walls.
+      ESP32-S3 → FPGA → Raspberry Pi, all the way to firmware.
+    </p>
+
+    <div class="flex gap-3 flex-wrap">
+      <a href="#contact"
+         class="font-mono font-bold uppercase tracking-widest transition-all"
+         style="font-size:0.68rem;padding:10px 20px;background:var(--acc);color:var(--bg);border:1px solid var(--acc);"
+         onmouseover="this.style.background='transparent';this.style.color='var(--acc)'"
+         onmouseout="this.style.background='var(--acc)';this.style.color='var(--bg)'">
+        Get in touch →
+      </a>
+      <a href="https://github.com/zeus-3115s" target="_blank" rel="noopener"
+         class="font-mono uppercase tracking-widest transition-all"
+         style="font-size:0.68rem;padding:10px 20px;color:var(--muted);border:1px solid var(--dim);"
+         onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+         onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/hemanth-sreedhara" target="_blank" rel="noopener"
+         class="font-mono uppercase tracking-widest transition-all"
+         style="font-size:0.68rem;padding:10px 20px;color:var(--muted);border:1px solid var(--dim);"
+         onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+         onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">
+        LinkedIn
+      </a>
+    </div>
+  </div>
+
+  <!-- RIGHT — mosaic -->
+  <div class="hidden lg:block relative overflow-hidden" style="border-left:1px solid var(--border);">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
+    <div class="grid grid-cols-2 grid-rows-3 gap-px h-full p-px" style="background:var(--border);">
+
+      <div class="col-span-2 relative overflow-hidden group min-h-[180px]" style="background:var(--bg2);">
+         <img src="assets/aurora-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;" class="group-hover:opacity-65 transition-all duration-500"> 
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        </div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:12px;left:12px;z-index:1;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">AURORA</div>
+          <div class="font-mono" style="font-size:0.52rem;color:var(--muted)">UAV Sound Localization · 7-mic PDM</div>
+        </div>
+        <div style="position:absolute;top:10px;right:10px;" class="font-mono opacity-30" style="font-size:0.45rem;color:var(--acc)">GCC-PHAT · TDOA</div>
+      </div>
+
+      <div class="relative overflow-hidden group min-h-[130px]" style="background:var(--bg2);">
+       <img src="assets/wysh-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;"> 
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;z-index:1;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">WYSH</div>
+          <div class="font-mono" style="font-size:0.5rem;color:var(--muted)">FPGA · I2S · MVDR</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden group min-h-[130px]" style="background:var(--bg2);">
+          <img src="assets/aurasight-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;"> 
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.2"><path d="M1 6s4-2 11-2 11 2 11 2"/><path d="M1 12s4-2 11-2 11 2 11 2"/><path d="M1 18s4-2 11-2 11 2 11 2"/></svg></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;z-index:1;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">AuraSight</div>
+          <div class="font-mono" style="font-size:0.5rem;color:var(--muted)">Wi-Fi CSI Radar</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden group min-h-[130px]" style="background:var(--bg2);">
+       <img src="assets/hackathon.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;"> 
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.2"><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;z-index:1;">
+          <div class="font-mono font-bold text-xs" style="color:var(--gold)">HackWire '26</div>
+          <div class="font-mono" style="font-size:0.5rem;color:var(--muted)">1st · 80+ teams</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden group min-h-[130px]" style="background:var(--bg2);">
+         <img src="assets/ieee-cubesat.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;"> 
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 60%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;z-index:1;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">IEEE AESS</div>
+          <div class="font-mono" style="font-size:0.5rem;color:var(--muted)">CubeSat EPS · Chair</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRACE WRAPPER ════════════════════════════════════════════ -->
+<div class="trace-wrapper" id="trace-wrapper">
+  <div class="trace-rail"><div class="trace-fill" id="trace-fill"></div></div>
+
+  <!-- ── SKILLS ──────────────────────────────────────────────── -->
+  <div class="section-node" id="node-skills">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 4v1M15 4v1M9 19v1M15 19v1M4 9h1M4 15h1M19 9h1M19 15h1"/></svg></div>
+    <span class="node-lbl">Skills</span>
+  </div>
+
+  <section id="skills" class="relative py-24 max-w-5xl mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-[1fr_60px_1fr] gap-0 items-start">
+      <div class="rc-left pr-10 pt-1">
+        <div class="ref-tag mb-2">MOD_01 // SKILLS</div>
+        <h2 class="font-mono font-bold text-2xl md:text-3xl mb-3" style="letter-spacing:-0.02em;color:var(--text)">What I work with</h2>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--muted)">Firmware to DSP. Protocols to pipelines.</p>
+      </div>
+      <div></div>
+      <div class="rc-right">
+        <!-- Register-map table with LED indicators -->
+        <div style="border:1px solid var(--border);">
+          <div style="border-bottom:1px solid var(--border);background:var(--bg2);display:grid;grid-template-columns:16px 70px 1fr;gap:8px;padding:6px 12px;align-items:center;">
+            <div></div>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.12em;text-transform:uppercase;">ADDR</span>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.12em;text-transform:uppercase;">VALUE</span>
+          </div>
+
+          <!-- skill rows -->
+          <div id="skill-rows">
+            <!-- generated by JS below -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resistor divider separator -->
+  <div style="display:flex;align-items:center;justify-content:center;height:72px;position:relative;z-index:5;">
+    <div style="display:flex;align-items:center;gap:0;width:220px;">
+      <div style="flex:1;height:1px;background:var(--acc3);"></div>
+      <div style="position:relative;width:38px;height:16px;border:1.5px solid var(--acc);background:var(--bg2);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--muted);letter-spacing:0.06em;">4Ω7</span>
+        <span style="position:absolute;top:-15px;font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--acc);opacity:0.6;letter-spacing:0.1em;">R1</span>
+        <span style="position:absolute;bottom:-15px;font-family:'IBM Plex Mono',monospace;font-size:0.38rem;color:var(--muted);letter-spacing:0.06em;">+Vcc</span>
+      </div>
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 6px var(--acc);flex-shrink:0;"></div>
+      <div style="position:relative;width:38px;height:16px;border:1.5px solid var(--acc);background:var(--bg2);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--muted);letter-spacing:0.06em;">2Ω2</span>
+        <span style="position:absolute;top:-15px;font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--acc);opacity:0.6;letter-spacing:0.1em;">R2</span>
+        <span style="position:absolute;bottom:-15px;font-family:'IBM Plex Mono',monospace;font-size:0.38rem;color:var(--muted);letter-spacing:0.06em;">GND</span>
+      </div>
+      <div style="flex:1;height:1px;background:var(--acc3);"></div>
+    </div>
+  </div>
+
+  <!-- ── PROJECTS ────────────────────────────────────────────── -->
+  <div class="section-node" id="node-projects">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M7 2v3M17 2v3M7 19v3M17 19v3M2 7h3M2 17h3M19 7h3M19 17h3"/></svg></div>
+    <span class="node-lbl">Projects</span>
+  </div>
+
+  <section id="projects" class="relative py-24 max-w-5xl mx-auto px-6 md:px-12">
+    <!-- heading aligned to same grid as other sections -->
+    <div class="grid grid-cols-[1fr_60px_1fr] gap-0 items-start mb-10">
+      <div class="rc-left pr-10 pt-1">
+        <div class="ref-tag mb-2">MOD_02 // PROJECTS</div>
+        <h2 class="font-mono font-bold text-2xl md:text-3xl" style="letter-spacing:-0.02em;color:var(--text)">Channel output</h2>
+      </div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-px" style="background:var(--border);border:1px solid var(--border);">
+
+      <!-- CH1 -->
+      <div class="ecard ch-left rc-reveal p-6 group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="led-dot d2"></span>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.1em;">CH1</span>
+            <span class="font-mono" style="font-size:0.5rem;color:var(--gold)">▲ 1st · MIT HackWire 2026 · 80+ teams</span>
+          </div>
+          <a href="https://github.com/zeus-3115s/AuraSight" target="_blank" rel="noopener"
+             class="font-mono transition-colors" style="font-size:0.52rem;color:var(--muted);border:1px solid var(--dim);padding:2px 8px;"
+             onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+             onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">GH →</a>
+        </div>
+        <div class="ref-tag mb-1">U3 // AURASIGHT</div>
+        <h3 class="font-mono font-bold text-sm mb-1" style="color:var(--acc)">AuraSight — Wi-Fi CSI Radar</h3>
+        <div class="font-mono mb-4" style="font-size:0.58rem;color:var(--muted);letter-spacing:0.05em;">ESP32-S3 · FreeRTOS · Flask · SocketIO</div>
+        <ul class="space-y-1.5 mb-4">
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Passive presence — no camera, no dedicated sensor</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>CSI amplitude/phase per subcarrier → variance → motion classify</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Live Flask/SocketIO dashboard · configurable thresholds</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="tag-acc">ESP-IDF</span><span class="tag-acc">Wi-Fi CSI</span><span class="tag-acc">PySerial</span><span class="tag-acc">SocketIO</span>
+        </div>
+      </div>
+
+      <!-- CH2 -->
+      <div class="ecard ch-left rc-reveal p-6 group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="led-dot d3"></span>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.1em;">CH2</span>
+            <span class="font-mono" style="font-size:0.5rem;color:var(--gold)">▲ 1st · CodeRed 3.0 · 50+ teams</span>
+          </div>
+          <a href="https://github.com/zeus-3115s/WYSH" target="_blank" rel="noopener"
+             class="font-mono transition-colors" style="font-size:0.52rem;color:var(--muted);border:1px solid var(--dim);padding:2px 8px;"
+             onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+             onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">GH →</a>
+        </div>
+        <div class="ref-tag mb-1">U4 // WYSH</div>
+        <h3 class="font-mono font-bold text-sm mb-1" style="color:var(--acc)">WYSH — Audio-Visual Sync</h3>
+        <div class="font-mono mb-4" style="font-size:0.58rem;color:var(--muted);letter-spacing:0.05em;">Verilog · Tang Nano 9K · Raspberry Pi</div>
+        <ul class="space-y-1.5 mb-4">
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>FPGA I2S master — phase-aligned, sub-100ms latency</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>MVDR beamformer tracks camera zoom in real time</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>3 MHz BCLK / 24 MHz clock · Philips I2S</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="tag-acc">Verilog</span><span class="tag-acc">I2S</span><span class="tag-acc">MVDR</span><span class="tag-acc">OpenCV</span>
+        </div>
+      </div>
+
+      <!-- CH3 -->
+      <div class="ecard ch-left rc-reveal p-6">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="led-dot"></span>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.1em;">CH3</span>
+          </div>
+          <a href="https://github.com/zeus-3115s/spectre-26" target="_blank" rel="noopener"
+             class="font-mono transition-colors" style="font-size:0.52rem;color:var(--muted);border:1px solid var(--dim);padding:2px 8px;"
+             onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+             onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">GH →</a>
+        </div>
+        <div class="ref-tag mb-1">U5 // AURORA</div>
+        <h3 class="font-mono font-bold text-sm mb-1" style="color:var(--acc)">AURORA — UAV Sound Localization</h3>
+        <div class="font-mono mb-4" style="font-size:0.58rem;color:var(--muted);">ESP32-S3 · PDM · GCC-PHAT · FreeRTOS</div>
+        <ul class="space-y-1.5 mb-4">
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>7-mic PDM array · dual ESP32-S3 · sub-ms GPIO sync</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>GCC-PHAT TDOA + bandpass to reject UAV rotor noise</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>0–360° azimuth on SK9822 LED ring · Vosk offline KWS</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="tag-acc">PDM</span><span class="tag-acc">GCC-PHAT</span><span class="tag-acc">Vosk</span><span class="tag-acc">SciPy</span>
+        </div>
+      </div>
+
+      <!-- CH4 -->
+      <div class="ecard ch-left rc-reveal p-6">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="led-dot d2"></span>
+            <span class="font-mono" style="font-size:0.45rem;color:var(--acc);opacity:0.5;letter-spacing:0.1em;">CH4</span>
+          </div>
+          <a href="https://github.com/zeus-3115s/antiAI" target="_blank" rel="noopener"
+             class="font-mono transition-colors" style="font-size:0.52rem;color:var(--muted);border:1px solid var(--dim);padding:2px 8px;"
+             onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+             onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">GH →</a>
+        </div>
+        <div class="ref-tag mb-1">U6 // ROBOGUARD</div>
+        <h3 class="font-mono font-bold text-sm mb-1" style="color:var(--acc)">Roboguard — Using AI to Stop AI</h3>
+        <div class="font-mono mb-4" style="font-size:0.58rem;color:var(--muted);">PyTorch · CLIP · Grad-CAM · Ollama</div>
+        <ul class="space-y-1.5 mb-4">
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>94% accuracy · 0.91 F1 on benchmark deepfake sets</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Image-poisoning pipeline — content AI-unlearnable</li>
+          <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Local Ollama · zero external API dependency</li>
+        </ul>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="tag-acc">CLIP</span><span class="tag-acc">Grad-CAM</span><span class="tag-acc">Flask</span><span class="tag-acc">Next.js</span>
+        </div>
+      </div>
+
+      <!-- CH5 full width -->
+      <div class="ecard rc-reveal p-6 md:col-span-2" style="border-left:2px solid var(--dim);">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="font-mono" style="font-size:0.45rem;color:var(--muted);letter-spacing:0.1em;">CH5</span>
+        </div>
+        <div class="ref-tag mb-1">U7 // MOTOR_MAINT</div>
+        <h3 class="font-mono font-bold text-sm mb-1" style="color:var(--text)">Predictive Motor Maintenance</h3>
+        <div class="font-mono mb-4" style="font-size:0.58rem;color:var(--muted);">Python · LSTM · MATLAB Simulink</div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <ul class="space-y-1.5">
+            <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>92% accuracy across BLDC fault modes</li>
+            <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>50+ Simulink scenarios · 35% FP reduction</li>
+          </ul>
+          <div class="flex flex-wrap gap-1.5 content-start">
+            <span class="tag-dim">LSTM</span><span class="tag-dim">Simulink</span><span class="tag-dim">Python</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Resistor divider 2 -->
+  <div style="display:flex;align-items:center;justify-content:center;height:72px;position:relative;z-index:5;">
+    <div style="display:flex;align-items:center;gap:0;width:220px;">
+      <div style="flex:1;height:1px;background:var(--acc3);"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 6px var(--acc);flex-shrink:0;"></div>
+      <div style="position:relative;width:38px;height:16px;border:1.5px solid var(--acc);background:var(--bg2);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--muted);">1Ω0</span>
+        <span style="position:absolute;top:-15px;font-family:'IBM Plex Mono',monospace;font-size:0.42rem;color:var(--acc);opacity:0.6;">R3</span>
+      </div>
+      <div style="flex:1;height:1px;background:var(--acc3);"></div>
+    </div>
+  </div>
+
+  <!-- ── IEEE ──────────────────────────────────────────────────── -->
+  <div class="section-node" id="node-ieee">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <span class="node-lbl">IEEE</span>
+  </div>
+
+  <section id="ieee" class="relative py-24 max-w-5xl mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-[1fr_60px_1fr] gap-0 items-start">
+      <div class="rc-left pr-10 pt-1">
+        <div class="ref-tag mb-2">MOD_03 // EXPERIENCE</div>
+        <h2 class="font-mono font-bold text-2xl md:text-3xl mb-3" style="letter-spacing:-0.02em;color:var(--text)">IEEE AESS</h2>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--muted)">Aerospace &amp; Electronic Systems Society.<br>Chair since Jan 2026.</p>
+      </div>
+      <div></div>
+      <div class="rc-right">
+        <div class="ecard ch-left p-5">
+          <div class="ref-tag mb-3">EXP_01 // BMSITM</div>
+          <div class="flex items-start justify-between gap-3 mb-1">
+            <div class="font-mono font-bold text-sm" style="color:var(--text)">Chair — IEEE AESS Society</div>
+            <div class="font-mono whitespace-nowrap" style="font-size:0.52rem;color:var(--muted)">Jan 2026 – Present</div>
+          </div>
+          <div class="font-mono mb-4" style="font-size:0.6rem;color:var(--acc);letter-spacing:0.05em;">BMSIT&amp;M · Bangalore</div>
+          <ul class="space-y-2">
+            <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Led EPS for 3U CubeSat — power profiling 5+ subsystems, 25% efficiency gain</li>
+            <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Coordinated 8+ workshops · CubeSat demos · 200+ participants</li>
+            <li class="text-xs font-light pl-4 relative" style="color:var(--muted);"><span style="position:absolute;left:0;color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;top:1px;">→</span>Previously Technical Head · Jan–Dec 2025</li>
+          </ul>
+          <div class="flex gap-2 mt-4 flex-wrap">
+            <span class="tag-dim">CubeSat EPS</span><span class="tag-dim">Power Systems</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ─────────────────────────────────────────────── -->
+  <div class="section-node" id="node-edu">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></div>
+    <span class="node-lbl">Education</span>
+  </div>
+
+  <section id="education" class="relative py-24 max-w-5xl mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-[1fr_60px_1fr] gap-0 items-start">
+      <div class="rc-left pr-10">
+        <div class="ecard p-5">
+          <div class="ref-tag mb-3">EDU_01 // BMSITM</div>
+          <div class="font-mono font-bold text-sm mb-1" style="color:var(--text)">B.E. Electrical &amp; Electronics Engineering</div>
+          <div class="font-mono mb-5" style="font-size:0.6rem;color:var(--acc);">BMSIT&amp;M · Bangalore · 2023 – 2027</div>
+          <div class="font-mono font-bold mb-1" style="font-size:2.6rem;color:var(--acc);letter-spacing:-0.04em;line-height:1;">8.27</div>
+          <div class="font-mono mb-5" style="font-size:0.52rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">CGPA / 10.0</div>
+          <div class="font-mono mb-2" style="font-size:0.52rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Coursework</div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="tag-dim">Signal Processing</span>
+            <span class="tag-dim">Analog Electronics</span>
+            <span class="tag-dim">Power Electronics</span>
+            <span class="tag-dim">VLSI</span>
+          </div>
+        </div>
+      </div>
+      <div></div>
+      <div class="rc-right pt-1">
+        <div class="ref-tag mb-2">MOD_04 // EDUCATION</div>
+        <h2 class="font-mono font-bold text-2xl md:text-3xl mb-3" style="letter-spacing:-0.02em;color:var(--text)">Foundation</h2>
+        <p class="text-sm font-light leading-relaxed" style="color:var(--muted)">Core EE curriculum — signal theory, analog design, power systems, digital logic — feeding directly into hardware work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACHIEVEMENTS ───────────────────────────────────────────── -->
+  <div class="section-node" id="node-ach">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+    <span class="node-lbl">Wins</span>
+  </div>
+
+  <section id="achievements" class="relative py-24 max-w-5xl mx-auto px-6 md:px-12">
+    <div class="grid grid-cols-[1fr_60px_1fr] gap-0 items-start">
+      <div class="rc-left pr-10 pt-1">
+        <div class="ref-tag mb-2">MOD_05 // ACHIEVEMENTS</div>
+        <h2 class="font-mono font-bold text-2xl md:text-3xl mb-2" style="letter-spacing:-0.02em;color:var(--text)">4 wins.<br>400+ teams.</h2>
+        <p class="text-sm font-light" style="color:var(--muted)">Many from projects still in active development.</p>
+      </div>
+      <div></div>
+      <div class="rc-right space-y-px">
+        <div class="ecard ch-gold p-5">
+          <div class="font-mono mb-2" style="font-size:0.52rem;color:var(--gold);">▲ 2nd Place</div>
+          <div class="ref-tag mb-1">ACH_01</div>
+          <div class="font-mono font-bold text-sm mb-0.5" style="color:var(--text)">MIT HackWire 2026</div>
+          <div class="font-mono mb-3" style="font-size:0.58rem;color:var(--muted)">80+ competing teams</div>
+          <p class="text-xs font-light" style="color:var(--muted)">Sensor-free human motion detection using passive Wi-Fi CSI analysis. ESP32-S3 + Raspberry Pi, built under hackathon pressure.</p>
+        </div>
+        <div class="ecard ch-gold p-5">
+          <div class="font-mono mb-2" style="font-size:0.52rem;color:var(--gold);">▲ 1st Place</div>
+          <div class="ref-tag mb-1">ACH_02</div>
+          <div class="font-mono font-bold text-sm mb-0.5" style="color:var(--text)">CodeRed 3.0 — 2025</div>
+          <div class="font-mono mb-3" style="font-size:0.58rem;color:var(--muted)">50+ competing teams</div>
+          <p class="text-xs font-light" style="color:var(--muted)">Real-time audio-visual zoom with MVDR beamforming. Tang Nano 9K FPGA + Raspberry Pi 4, end-to-end under competition pressure.</p>
+        </div>
+        <div class="ecard ch-gold p-5">
+          <div class="font-mono mb-2" style="font-size:0.52rem;color:var(--gold);">▲ 3rd Place</div>
+          <div class="ref-tag mb-1">ACH_03</div>
+          <div class="font-mono font-bold text-sm mb-0.5" style="color:var(--text)">IEEE Spectre 2026</div>
+          <div class="font-mono mb-3" style="font-size:0.58rem;color:var(--muted)">50+ competing teams</div>
+          <p class="text-xs font-light" style="color:var(--muted)">Real-time acoustic sound source localization on an autonomous drone for Search and Rescue (SAR) missions.</p>
+        </div>
+        <div class="ecard ch-gold p-5">
+          <div class="font-mono mb-2" style="font-size:0.52rem;color:var(--gold);">▲ 2nd Place</div>
+          <div class="ref-tag mb-1">ACH_04</div>
+          <div class="font-mono font-bold text-sm mb-0.5" style="color:var(--text)">CYPHER 2.0</div>
+          <div class="font-mono mb-3" style="font-size:0.58rem;color:var(--muted)">50+ competing teams</div>
+          <p class="text-xs font-light" style="color:var(--muted)">Content Immunization — modifies images preventing AI misuse while retaining quality. AI Detection identifies AI-generated content. Deployed via website and Chrome extension with social media integration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact node -->
+  <div class="section-node" id="node-contact">
+    <div class="node-ring"><svg class="node-svg" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+    <span class="node-lbl">Contact</span>
+  </div>
+
+</div><!-- /trace-wrapper -->
+
+<!-- ═══ CONTACT ══════════════════════════════════════════════════ -->
+<section id="contact" class="py-32 px-8 text-center" style="border-top:1px solid var(--border);">
+  <div class="ref-tag mb-4 block"> CONTACT</div>
+  <h2 class="font-mono font-bold mb-3 neon-text" style="font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-0.03em;">
+    Want to build<br>something?
+  </h2>
+  <p class="text-sm font-light mb-10 max-w-xs mx-auto" style="color:var(--muted)">Open to embedded systems internships and hardware projects.</p>
+  <div class="flex justify-center gap-3 flex-wrap">
+    <a href="mailto:hemanth3115s@gmail.com"
+       class="font-mono font-bold uppercase tracking-widest transition-all"
+       style="font-size:0.68rem;padding:12px 22px;background:var(--acc);color:var(--bg);border:1px solid var(--acc);"
+       onmouseover="this.style.background='transparent';this.style.color='var(--acc)'"
+       onmouseout="this.style.background='var(--acc)';this.style.color='var(--bg)'">
+      hemanth3115s@gmail.com →
+    </a>
+    <a href="https://linkedin.com/in/hemanth-sreedhara" target="_blank" rel="noopener"
+       class="font-mono uppercase tracking-widest transition-all"
+       style="font-size:0.68rem;padding:12px 22px;color:var(--muted);border:1px solid var(--dim);"
+       onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+       onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">LinkedIn</a>
+    <a href="https://github.com/zeus-3115s" target="_blank" rel="noopener"
+       class="font-mono uppercase tracking-widest transition-all"
+       style="font-size:0.68rem;padding:12px 22px;color:var(--muted);border:1px solid var(--dim);"
+       onmouseover="this.style.color='var(--acc)';this.style.borderColor='var(--acc)'"
+       onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--dim)'">GitHub</a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER — PCB trace decoration ══════════════════════════ -->
+<footer style="border-top:1px solid var(--border);padding:0;">
+  <!-- PCB trace row -->
+  <div style="height:28px;overflow:hidden;opacity:0.18;padding:0 32px;display:flex;align-items:center;gap:0;">
+    <!-- trace segments with vias -->
+    <div style="height:1px;flex:1;background:var(--acc);"></div>
+    <div style="width:6px;height:6px;border-radius:50%;border:1px solid var(--acc);background:var(--bg);flex-shrink:0;"></div>
+    <div style="height:1px;width:40px;background:var(--acc);flex-shrink:0;"></div>
+    <div style="width:6px;height:6px;border-radius:50%;border:1px solid var(--acc);background:var(--bg);flex-shrink:0;"></div>
+    <div style="height:1px;width:20px;background:var(--acc);flex-shrink:0;"></div>
+    <div style="width:10px;height:10px;border:1px solid var(--acc);background:var(--bg);flex-shrink:0;transform:rotate(45deg);"></div>
+    <div style="height:1px;width:20px;background:var(--acc);flex-shrink:0;"></div>
+    <div style="width:6px;height:6px;border-radius:50%;border:1px solid var(--acc);background:var(--bg);flex-shrink:0;"></div>
+    <div style="height:1px;width:60px;background:var(--acc);flex-shrink:0;"></div>
+    <div style="width:6px;height:6px;border-radius:50%;border:1px solid var(--acc);background:var(--bg);flex-shrink:0;"></div>
+    <div style="height:1px;flex:1;background:var(--acc);"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 32px 14px;">
+    <span class="font-mono" style="font-size:0.52rem;color:var(--muted)">Hemanth Sreedara · Bangalore</span>
+    <span class="font-mono" style="font-size:0.48rem;color:var(--dim);letter-spacing:0.08em;">REV_C · 2025</span>
+    <span class="font-mono" style="font-size:0.52rem;color:var(--muted)">HTML · Tailwind · JS</span>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   MOSFET TOGGLE — dark/light mode
+═══════════════════════════════════════════════════════════════ */
+let lightMode = true;
+
+function toggleMode() {
+  lightMode = !lightMode;
+  const html = document.getElementById('html-root');
+  const label = document.getElementById('mosfet-label');
+  const channel = document.getElementById('mosfet-channel');
+  const gateDot = document.getElementById('mosfet-gate-dot');
+  const gateArrow = document.getElementById('mosfet-arrow');
+
+  if (lightMode) {
+    html.classList.add('light');
+    label.textContent = 'VGS=+5V';
+    label.style.color = 'var(--acc)';
+    channel.style.opacity = '1';
+    channel.style.fill = 'var(--acc)';
+    gateDot.style.fill = 'var(--acc)';
+    gateArrow.style.stroke = 'var(--acc)';
+  } else {
+    html.classList.remove('light');
+    label.textContent = 'VGS=0';
+    label.style.color = 'var(--muted)';
+    channel.style.opacity = '0.3';
+    channel.style.fill = 'transparent';
+    gateDot.style.fill = 'var(--dim)';
+    gateArrow.style.stroke = 'var(--dim)';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SKILL ROWS — register map with LED dots
+═══════════════════════════════════════════════════════════════ */
+const skills = [
+  { addr:'0x01', label:'Languages',        tags:['C','C++','Python','Verilog','Assembly'], accent:false },
+  { addr:'0x02', label:'Platforms',        tags:['ESP32-S3','Raspberry Pi','Tang Nano 9K'], accent:false },
+  { addr:'0x03', label:'Protocols',        tags:['I2S','PDM','SPI','I2C','UART','Wi-Fi CSI'], accent:false },
+  { addr:'0x04', label:'Signal Processing',tags:['GCC-PHAT','MVDR','TDOA','Beamforming'], accent:false },
+  { addr:'0x05', label:'Frameworks',       tags:['ESP-IDF','Linux'], accent:false },
+  { addr:'0x06', label:'Tools',            tags:['MATLAB','Simulink','Gowin EDA','LTspice'], accent:false },
+];
+
+const delays = [0,0.3,0.6,0.9,0.2,0.5];
+const rowsEl = document.getElementById('skill-rows');
+skills.forEach((s, i) => {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:16px 70px 1fr;gap:8px;padding:10px 12px;align-items:start;border-bottom:1px solid var(--bdim);background:var(--bg2);transition:background 0.2s;';
+  row.onmouseover = ()=>{ row.style.background='var(--bg3)'; };
+  row.onmouseout  = ()=>{ row.style.background='var(--bg2)'; };
+
+  const ledDelay = delays[i % delays.length];
+  const tagStyle = s.accent
+    ? 'font-family:IBM Plex Mono,monospace;font-size:0.55rem;padding:2px 8px;color:var(--acc);background:var(--acc2);border:1px solid var(--acc3);'
+    : 'font-family:IBM Plex Mono,monospace;font-size:0.55rem;padding:2px 8px;color:var(--ghost);background:var(--bdim);border:1px solid var(--bdim);';
+
+  row.innerHTML = `
+    <div style="padding-top:2px;">
+      <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);color:var(--acc);animation:led ${1.8 + i*0.2}s ease-in-out ${ledDelay}s infinite;"></span>
+    </div>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;color:var(--acc);opacity:0.4;letter-spacing:0.1em;padding-top:3px;">${s.addr}</span>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.52rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">${s.label}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${s.tags.map(t=>`<span style="${tagStyle}">${t}</span>`).join('')}
+      </div>
+    </div>`;
+  rowsEl.appendChild(row);
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO OSCILLOSCOPE WAVE
+═══════════════════════════════════════════════════════════════ */
+function drawScopeWave() {
+  const svg = document.getElementById('hero-wave');
+  const w = svg.clientWidth || window.innerWidth;
+  const h = 60;
+  const pts = [];
+  const t = Date.now() / 600;
+  for (let x = 0; x <= w; x += 4) {
+    const y = h/2 + Math.sin((x/w)*Math.PI*6 + t) * 18 + Math.sin((x/w)*Math.PI*14 + t*0.7)*6;
+    pts.push(`${x},${y.toFixed(1)}`);
+  }
+  document.getElementById('scope-wave').setAttribute('points', pts.join(' '));
+  requestAnimationFrame(drawScopeWave);
+}
+drawScopeWave();
+
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TRACE NODES — position + scroll state
+═══════════════════════════════════════════════════════════════ */
+const tw = document.getElementById('trace-wrapper');
+const tf = document.getElementById('trace-fill');
+const nodeMap = [
+  { id:'node-skills',   secId:'skills' },
+  { id:'node-projects', secId:'projects' },
+  { id:'node-ieee',     secId:'ieee' },
+  { id:'node-edu',      secId:'education' },
+  { id:'node-ach',      secId:'achievements' },
+  { id:'node-contact',  secId:null },
+];
+
+function posNodes() {
+  const wTop = tw.offsetTop;
+  nodeMap.forEach((n,i) => {
+    const el = document.getElementById(n.id);
+    if (!el) return;
+    if (n.secId) {
+      el.style.top = (document.getElementById(n.secId).offsetTop - wTop - -950) + 'px';
+    } else {
+      const prev = document.getElementById(nodeMap[nodeMap.length-2].secId);
+      el.style.top = (prev.offsetTop - wTop + prev.offsetHeight +950) + 'px';
+    }
+  });
+}
+
+function onScroll() {
+  const wTop = tw.offsetTop;
+  const mid  = window.scrollY + window.innerHeight * 0.5;
+  tf.style.height = Math.max(0, mid - wTop) + 'px';
+
+  nodeMap.forEach(n => {
+    if (!n.secId) return;
+    const el  = document.getElementById(n.id);
+    const sec = document.getElementById(n.secId);
+    const top = sec.offsetTop, bot = top + sec.offsetHeight;
+    el.classList.toggle('active', mid >= top && mid < bot);
+    el.classList.toggle('passed', mid >= bot);
+    if (mid >= top && mid < bot) el.classList.remove('passed');
+  });
+  // contact node
+  const lastSec = document.getElementById(nodeMap[nodeMap.length-2].secId);
+  const cn = document.getElementById('node-contact');
+  cn.classList.toggle('passed', mid >= lastSec.offsetTop + lastSec.offsetHeight);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RC CURVE REVEALS
+═══════════════════════════════════════════════════════════════ */
+const revEls = document.querySelectorAll('.rc-reveal,.rc-left,.rc-right');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); revObs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+revEls.forEach(el => revObs.observe(el));
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
+window.addEventListener('scroll', onScroll, { passive:true });
+window.addEventListener('resize', () => { posNodes(); onScroll(); });
+document.fonts.ready.then(() => { posNodes(); onScroll(); });
+</script>
+</body>
+</html>
