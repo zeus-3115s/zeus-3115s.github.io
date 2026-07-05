@@ -512,6 +512,63 @@ html.light nav { background: rgba(244,240,232,0.9); }
     </div>
   </div>
 
+  <!-- MOBILE-ONLY MOSAIC — horizontal scroll strip, shown below hero text on small screens.
+       Hidden at lg breakpoint, where the desktop 2-col image mosaic (further below) takes over. -->
+  <div class="lg:hidden px-8 md:px-16 pb-14 -mt-6">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="font-mono" style="font-size:0.52rem;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;">Swipe →</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <div class="flex gap-3 overflow-x-auto pb-2" style="scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;">
+
+      <div class="relative overflow-hidden flex-shrink-0" style="scroll-snap-align:start;width:220px;height:150px;background:var(--bg2);border:1px solid var(--border);">
+        <img src="assets/aurora-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 65%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">AURORA</div>
+          <div class="font-mono" style="font-size:0.48rem;color:var(--muted)">UAV Sound Localization</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden flex-shrink-0" style="scroll-snap-align:start;width:220px;height:150px;background:var(--bg2);border:1px solid var(--border);">
+        <img src="assets/wysh-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 65%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">WYSH</div>
+          <div class="font-mono" style="font-size:0.48rem;color:var(--muted)">FPGA · I2S · MVDR</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden flex-shrink-0" style="scroll-snap-align:start;width:220px;height:150px;background:var(--bg2);border:1px solid var(--border);">
+        <img src="assets/aurasight-photo.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 65%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">AuraSight</div>
+          <div class="font-mono" style="font-size:0.48rem;color:var(--muted)">Wi-Fi CSI Radar</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden flex-shrink-0" style="scroll-snap-align:start;width:220px;height:150px;background:var(--bg2);border:1px solid var(--border);">
+        <img src="assets/hackathon.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 65%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;">
+          <div class="font-mono font-bold text-xs" style="color:var(--gold)">HackWire '26</div>
+          <div class="font-mono" style="font-size:0.48rem;color:var(--muted)">2nd · 80+ teams</div>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden flex-shrink-0" style="scroll-snap-align:start;width:220px;height:150px;background:var(--bg2);border:1px solid var(--border);">
+        <img src="assets/ieee-cubesat.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 65%);"></div>
+        <div style="position:absolute;bottom:10px;left:10px;">
+          <div class="font-mono font-bold text-xs" style="color:var(--acc)">IEEE AESS</div>
+          <div class="font-mono" style="font-size:0.48rem;color:var(--muted)">CubeSat EPS · Chair</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- RIGHT — mosaic -->
   <div class="hidden lg:block relative overflow-hidden" style="border-left:1px solid var(--border);">
     <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
